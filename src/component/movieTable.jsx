@@ -1,38 +1,30 @@
 import React, { Component } from 'react'
 import Like from './common/Like';
+import TableBody from './common/TableBody';
+import TableHeader from './common/tableHeader';
+
 
 const MovieTable = ({data, onLike, onDelete, onSort, sortColumn}) => {
 
-    const raiseSort = (path) => {
-        let newSort = {...sortColumn};
-        newSort = (newSort.path == path && newSort.order == 'asc') 
-                    ? {path:path, order:'desc'} 
-                    : {path:path, order:'asc'}
-        onSort(newSort);
-    }
+    const columns = [
+        {key: 'title', label:'Title', sort:true},
+        {key: 'genre.name', label:'Genre', sort:true},
+        {key: 'numberInStock', label:'Stock', sort:true},
+        {key: 'dailyRentalRate', label:'Rate', sort:true},
+        {key: 'like', content:(movie) => <Like isLiked={movie.liked} onLike={() => onLike(movie)}/>},
+        {key: 'delete', content:(movie) => <button className='btn btn-danger' onClick={() => onDelete(movie)}>Delete</button>},
+    ]
 
     return (
         <table className="table">
-            <thead>
-                <tr style={{cursor:'pointer'}}>
-                    <th onClick={() => raiseSort('title')}>Title</th>
-                    <th onClick={() => raiseSort('genre.name')}>Genre</th>
-                    <th onClick={() => raiseSort('numberInStock')}>Stock</th>
-                    <th onClick={() => raiseSort('dailyRentalRate')}>Rate</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {data.map(movie => <tr key={movie._id}>
-                    <td>{movie.title}</td>
-                    <td>{movie.genre.name}</td>
-                    <td>{movie.numberInStock}</td>
-                    <td>{movie.dailyRentalRate}</td>
-                    <td><Like isLiked={movie.liked} onLike={() => onLike(movie)}/></td>
-                    <td><button className='btn btn-danger' onClick={() => onDelete(movie)}>Delete</button></td>
-                </tr>)}
-            </tbody>
+           <TableHeader
+                onSort={onSort}
+                sortColumn={sortColumn}
+                columns={columns}
+                />
+            <TableBody 
+                allData={data}
+                columns={columns}/>
         </table>
     );
 }

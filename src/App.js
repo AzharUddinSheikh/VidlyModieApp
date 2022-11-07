@@ -6,6 +6,7 @@ import Customer from './component/Customer';
 import {Routes, Route, Navigate} from 'react-router-dom';
 import MovieDetail from './component/MovieDetail';
 import NotFound from './component/common/NotFound';
+import LoginForm from './component/LoginForm';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
         <Route path='/movie/:id' element={<MovieDetail />} />
  
         <Route path='/movies' element={<Movie />} />
+
+         <Route path='/login' element={<LoginForm />} />
 
         <Route path='/not-found' element={<NotFound />} />
 

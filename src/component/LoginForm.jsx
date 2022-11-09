@@ -14,9 +14,9 @@ const LoginForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(schema)});
 
     const onSubmit = data => {
-        console.log(data)
+        console.log('login data submitted')
     }
-
+    
     return (
         <div className="container">
             <div className="row">
@@ -27,7 +27,7 @@ const LoginForm = () => {
                             label='Username'
                             register={register}
                             errors={errors}
-                            required/>
+                            required={false}/>
                         <Input 
                             id='password'
                             label='Password'

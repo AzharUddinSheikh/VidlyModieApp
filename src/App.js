@@ -7,6 +7,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import MovieDetail from './component/MovieDetail';
 import NotFound from './component/common/NotFound';
 import LoginForm from './component/LoginForm';
+import RegisterForm from './component/RegisterForm';
 
 
 function App() {
@@ -22,7 +23,9 @@ function App() {
  
         <Route path='/movies' element={<Movie />} />
 
-         <Route path='/login' element={<LoginForm />} />
+        <Route path='/login' element={<LoginForm />} />
+
+        <Route path='/register' element={<RegisterForm />} />
 
         <Route path='/not-found' element={<NotFound />} />
 

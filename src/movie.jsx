@@ -6,6 +6,7 @@ import { genres } from './server/fakeGenreService';
 import { getMovies } from './server/fakeMovieService';
 import { paginate } from './utils/paginate';
 import _ from 'lodash';
+import { NavLink } from 'react-router-dom';
 
 const Movie = () => {
 
@@ -77,7 +78,14 @@ const Movie = () => {
                 </div>
                 
                 <div className="col">
-                    <p>Showing {length} movies in the database</p>
+                    <div className="row mt-3">
+                        <div className="col">
+                            <p>Showing {length} movies in the database</p>
+                        </div>
+                        <div className="col-3">
+                            <NavLink to='/movies/new' className='btn btn-primary'>Add Movie</NavLink>
+                        </div>
+                    </div>
                     
                     <MovieTable
                         data={data}

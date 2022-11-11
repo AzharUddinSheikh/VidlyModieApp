@@ -20,6 +20,8 @@ function App() {
         <Route path='/customer' element={<Customer />} />
 
         <Route path='/movie/:id' element={<MovieDetail />} />
+
+        <Route path='/movies/new' element={<MovieDetail />} />
  
         <Route path='/movies' element={<Movie />} />
 

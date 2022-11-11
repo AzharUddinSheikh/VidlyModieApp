@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 const RegisterForm = () => {
     
     const schema = yup.object({
-        Username: yup.string().required(),
+        Username: yup.string().email().required(),
         Password: yup.string().min(5).required(),
         Name: yup.string().required()
     }).required();

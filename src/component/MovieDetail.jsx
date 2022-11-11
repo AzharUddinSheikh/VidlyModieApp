@@ -4,20 +4,11 @@ import { useParams } from 'react-router-dom';
 import Input from './common/Input';
 import * as yup from 'yup';
 import { getMovie } from '../server/fakeMovieService';
-import { useState } from 'react';
 import { useEffect } from 'react';
 
-const newMovie = {
-    id:'',
-    title:'',
-    genre:{ _id: "5b21ca3eeb7f6fbccd471818", name: "Action" },
-    numberInStock: '',
-    dailyRentalRate: ''
-}
 
 const MovieDetail = () => {
     const movieId = useParams()?.id;
-    const [movie, setMovie] = useState(newMovie);
     
     const schema = yup.object({
         Title: yup.string().required(),
@@ -54,9 +45,8 @@ const MovieDetail = () => {
                         NumberInStock : movie.numberInStock,
                         Rate : movie.dailyRentalRate})
             }
-            return newMovie
         }
-        setMovie(getMovieById(movieId));
+        getMovieById(movieId)
     }, [])
 
 

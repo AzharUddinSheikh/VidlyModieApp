@@ -25,6 +25,7 @@ const Movie = () => {
 
     useEffect(() => {
         setSelectedGenre({_id:1, name:'All Genre'});
+        setCurrentPage(1);
     }, [search])
 
     const handleDelete = (movie) => {
@@ -47,6 +48,7 @@ const Movie = () => {
     const handleSelectGenre = (genre) => {
         setSelectedGenre(genre)
         setCurrentPage(1);
+        setSearch('')
     }
 
     const handleSort = (sortColumn) => {
@@ -94,6 +96,7 @@ const Movie = () => {
                                 type="text" 
                                 className="form-control"
                                 placeholder='Search Movie'
+                                value={search}
                                 onChange={e => setSearch(e.currentTarget.value)}/>
                         </div>
                         <div className="col-3">

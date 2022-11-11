@@ -16,11 +16,16 @@ const Movie = () => {
     const [allGenre, setAllGenre] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState({_id:1, name:'All Genre'});
     const [sortColumn, setSortColumn] = useState({path:'title', order:'asc'});
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         setAllMovies(getMovies());
         setAllGenre(genres);
     }, [])
+
+    useEffect(() => {
+        setSelectedGenre({_id:1, name:'All Genre'});
+    }, [search])
 
     const handleDelete = (movie) => {
         setAllMovies(allMovies.filter(m => m != movie));
@@ -52,7 +57,11 @@ const Movie = () => {
         let filteredMovies = allMovies;
 
         if (selectedGenre.name != 'All Genre') {
-            filteredMovies = allMovies.filter(m => m.genre.name == selectedGenre.name);
+            filteredMovies = filteredMovies.filter(m => m.genre.name == selectedGenre.name);
+        }
+        
+        if (search) {
+            filteredMovies = filteredMovies.filter(m => m.title.toLowerCase().startsWith(search.toLowerCase()));
         }
 
         const sortedMovie = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order])
@@ -81,6 +90,11 @@ const Movie = () => {
                     <div className="row mt-3">
                         <div className="col">
                             <p>Showing {length} movies in the database</p>
+                            <input 
+                                type="text" 
+                                className="form-control"
+                                placeholder='Search Movie'
+                                onChange={e => setSearch(e.currentTarget.value)}/>
                         </div>
                         <div className="col-3">
                             <NavLink to='/movies/new' className='btn btn-primary'>Add Movie</NavLink>

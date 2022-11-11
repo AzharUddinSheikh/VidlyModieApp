@@ -3,8 +3,8 @@ import React from 'react'
 const Input = ({id, label, register, required, errors, ...rest}) => {
     return (
         <div className="form-group">
-            <label htmlFor={id}>{label}</label>
-            <input 
+            {label && <label htmlFor={id}>{label}</label>}
+            <input
                 {...rest}
                 className="form-control"
                 {...register(label, { required })} />

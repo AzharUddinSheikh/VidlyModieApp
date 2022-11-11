@@ -1,20 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Input from './common/Input';
 import * as yup from 'yup';
 import { getMovie } from '../server/fakeMovieService';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Select from './common/Select';
+import { genres } from '../server/fakeGenreService';
 
 
 const MovieDetail = () => {
     const movieId = useParams()?.id;
+    const navigate = useNavigate();
+    const [allGenre, setAllGenre] = useState([]);
     
     const schema = yup.object({
         Title: yup.string().required(),
         Genre: yup.
-                mixed().
-                oneOf(['Action', 'Thriller', 'Comedy']).
+                string().
                 required(),
         NumberInStock: yup.
                     number().
@@ -29,26 +32,30 @@ const MovieDetail = () => {
                 max(10, 'Should Not be Greater than 10').
                 required('Please Provide The Rate'),
     })
-    const {register, reset, formState : {errors}, handleSubmit, setError} = useForm({resolver: yupResolver(schema)})
+    const {register, reset, formState : {errors}, handleSubmit } = useForm({resolver: yupResolver(schema)})
 
     const onSubmit = data => {
-        console.log('movie new data is been submitted')
+        console.log(data);
+        return navigate('/movies', {push:true})
     }
 
     useEffect(() => {
-        const getMovieById = (id) => {
-            if (id !== undefined) {
-                const movie = getMovie(id)
-                reset({
-                        Title : movie.title,
-                        Genre : movie.genre.name,
-                        NumberInStock : movie.numberInStock,
-                        Rate : movie.dailyRentalRate})
-            }
-        }
-        getMovieById(movieId)
+        setAllGenre(genres)
     }, [])
 
+    useEffect(() => {
+        let movie = undefined;
+        if (movieId !== undefined) {
+            movie = getMovie(movieId);
+            if (!movie) return navigate('/not-found', { replace: true });
+            reset({
+                Title : movie.title,
+                Genre : movie.genre._id,
+                NumberInStock : movie.numberInStock,
+                Rate : movie.dailyRentalRate
+            })
+        }
+    }, [])
 
     return (
        <div className="container">
@@ -61,12 +68,12 @@ const MovieDetail = () => {
                             errors={errors}
                             register={register}
                             type='text'/>
-                        <Input
-                            id='genre'
+                        <Select
+                            name='genre'
                             label='Genre'
                             errors={errors}
-                            register={register}
-                            type='text'/>
+                            options={allGenre}
+                            register={register}/>
                         <Input
                             id='stock'
                             label='NumberInStock'

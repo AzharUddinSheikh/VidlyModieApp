@@ -8,6 +8,7 @@ import MovieDetail from './component/MovieDetail';
 import NotFound from './component/common/NotFound';
 import LoginForm from './component/LoginForm';
 import RegisterForm from './component/RegisterForm';
+import Demo from './demo/component/demo';
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
         <Route path='/movie/:id' element={<MovieDetail />} />
 
         <Route path='/movies/new' element={<MovieDetail />} />
+
+        <Route path='/demo' element={<Demo />} />
  
         <Route path='/movies' element={<Movie />} />
 

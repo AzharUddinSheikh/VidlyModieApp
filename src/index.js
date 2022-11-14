@@ -5,7 +5,8 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css';
 import { BrowserRouter } from 'react-router-dom';
-import logService from './demo/services/logService';
+import logService from './services/logService';
+
 
 logService.init();
 

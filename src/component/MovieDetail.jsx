@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Input from './common/Input';
 import * as yup from 'yup';
-import { getMovie } from '../server/fakeMovieService';
 import { useEffect, useState } from 'react';
 import Select from './common/Select';
-import { genres } from '../server/fakeGenreService';
+import { genres } from '../services/genreService';
+import { getMovieById } from '../services/movieService';
 
 
 const MovieDetail = () => {
@@ -40,20 +40,29 @@ const MovieDetail = () => {
     }
 
     useEffect(() => {
-        setAllGenre(genres)
+        const getGenres = async () => {
+            const {data} = await genres();
+            setAllGenre(data)
+        };
+        getGenres();
     }, [])
 
     useEffect(() => {
-        let movie = undefined;
         if (movieId !== undefined) {
-            movie = getMovie(movieId);
-            if (!movie) return navigate('/not-found', { replace: true });
-            reset({
-                Title : movie.title,
-                Genre : movie.genre._id,
-                NumberInStock : movie.numberInStock,
-                Rate : movie.dailyRentalRate
-            })
+            const getMovie = async (id) => {
+                try {
+                    const {data} = await getMovieById(id);
+                    reset({
+                        Title : data.title,
+                        Genre : data.genre._id,
+                        NumberInStock : data.numberInStock,
+                        Rate : data.dailyRentalRate
+                    });
+                } catch (err) {
+                    return navigate('/not-found', { replace: true });
+                }
+            }
+            getMovie(movieId);
         }
     }, [])
 

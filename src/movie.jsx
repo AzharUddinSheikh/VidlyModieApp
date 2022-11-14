@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
+import { NavLink } from 'react-router-dom';
+import { paginate } from './utils/paginate';
 import ListGroup from './component/common/ListGroup';
 import Pagination from './component/common/Pagination';
 import MovieTable from './component/movieTable';
-import { genres } from './server/fakeGenreService';
-import { getMovies } from './server/fakeMovieService';
-import { paginate } from './utils/paginate';
-import _ from 'lodash';
-import { NavLink } from 'react-router-dom';
+import { genres } from './services/genreService';
+import { movies } from './services/movieService';
 
 const Movie = () => {
 
@@ -19,8 +19,16 @@ const Movie = () => {
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        setAllMovies(getMovies());
-        setAllGenre(genres);
+        const getMovies = async () => {
+            const {data} = await movies();
+            setAllMovies(data);
+        }
+        getMovies();
+        const getGenres = async () => {
+            const {data} = await genres();
+            setAllGenre(data)
+        };
+        getGenres();
     }, [])
 
     useEffect(() => {

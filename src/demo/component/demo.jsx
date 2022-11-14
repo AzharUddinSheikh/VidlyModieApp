@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import http from '../services/httpServices';
-import config from '../config.json';
+import http from '../../services/httpServices';
+import config from '../../config.json';
 import toast, { Toaster } from 'react-hot-toast';
-import logService from '../services/logService';
+import logService from '../../services/logService';
 
 
 export default function Demo() {
@@ -11,7 +11,7 @@ export default function Demo() {
 
     useEffect(() => {
         const getData = async () => {
-            const {data} = await  http.get(config.apiEndPoint)
+            const {data} = await http.get(config.apiEndPoint)
             setAllPosts(data)
             }
         getData();

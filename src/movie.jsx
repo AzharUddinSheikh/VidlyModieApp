@@ -6,17 +6,14 @@ import ListGroup from './component/common/ListGroup';
 import Pagination from './component/common/Pagination';
 import MovieTable from './component/movieTable';
 import { genres } from './services/genreService';
-import { movies } from './services/movieService';
+import { movies, deleteMovie } from './services/movieService';
 import toast, { Toaster } from 'react-hot-toast';
-import http from './services/httpServices';
-import config from './config.json';
-import logService from './services/logService';
 
 
 const Movie = () => {
 
     const [allMovies, setAllMovies] = useState([]);
-    const [itemPerPage, setItemPerPage] = useState(3);
+    const [itemPerPage] = useState(3);
     const [currentPage, setCurrentPage] = useState(1);
     const [allGenre, setAllGenre] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState({_id:1, name:'All Genre'});
@@ -41,13 +38,18 @@ const Movie = () => {
         setCurrentPage(1);
     }, [search])
 
-    const handleDelete = (movie) => {
-        const deleteMovie = async (id) => {
-            await http.delete(`${config.apiMovieEndPoint}/${id}`)
+    const handleDelete = async (movie) => {
+        const originalMovies = allMovies;
+        try {
+            await deleteMovie(movie._id)
             setAllMovies(allMovies.filter(m => m != movie));
+            toast.success(`${movie.title} is been deleted successfully`);
+        } catch (e) {
+            if (e.response && e.response.status == 404) {
+                toast.error(`This movie already been deleted`)
+            }
+            setAllMovies(originalMovies);
         }
-        deleteMovie(movie._id)
-        toast.success(`${movie.title} is been deleted successfully`);
     }
 
     const handleLike = (movie) => {

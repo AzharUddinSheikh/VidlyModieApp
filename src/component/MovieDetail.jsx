@@ -6,11 +6,8 @@ import * as yup from 'yup';
 import { useEffect, useState } from 'react';
 import Select from './common/Select';
 import { genres } from '../services/genreService';
-import { getMovieById } from '../services/movieService';
-import logService from '../services/logService';
+import { getMovieById, addMovie, updateMovie } from '../services/movieService';
 import toast, { Toaster } from 'react-hot-toast';
-import http from '../services/httpServices';
-import config from '../config.json';
 
 
 const MovieDetail = () => {
@@ -38,19 +35,19 @@ const MovieDetail = () => {
     })
     const {register, reset, formState : {errors}, handleSubmit } = useForm({resolver: yupResolver(schema)})
 
-    const onSubmit = data => {
-        if (movieId) {
-            const updateMovie = async () => {
-                await http.put(`${config.apiMovieEndPoint}/${movieId}`, data);
+    const onSubmit = async (data) => {
+        // save movie func (movie service) which handle both
+        // update or adding new movie which make code clearer
+        try {
+            if (movieId) {
+                await updateMovie(movieId, data)
                 toast.success(`Movie Updated Successfully`);
-            };
-            updateMovie();
-        } else {
-            const saveMovie = async () => {
-                await http.post(config.apiMovieEndPoint, data);
-                toast.success(`Movie Added Successfully`)
+            } else {
+                await addMovie(data);
+                toast.success(`Movie Added Successfully`);
             }
-            saveMovie();
+        } catch (err) {
+            console.log('handle Excepted Error');
         }
         return navigate('/movies', {push:true});
     }
@@ -61,7 +58,7 @@ const MovieDetail = () => {
             setAllGenre(data)
         };
         getGenres();
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (movieId !== undefined) {

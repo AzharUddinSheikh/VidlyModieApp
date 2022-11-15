@@ -2,8 +2,8 @@ import React from 'react'
 
 const Input = ({id, label, register, required, errors, ...rest}) => {
     return (
-        <div className="form-group">
-            {label && <label htmlFor={id}>{label}</label>}
+        <div className="form-group mt-3">
+            {label && <label style={{'textTransform':'capitalize'}} htmlFor={id}>{label}</label>}
             <input
                 {...rest}
                 className="form-control"

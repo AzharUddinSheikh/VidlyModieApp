@@ -7,6 +7,11 @@ import Pagination from './component/common/Pagination';
 import MovieTable from './component/movieTable';
 import { genres } from './services/genreService';
 import { movies } from './services/movieService';
+import toast, { Toaster } from 'react-hot-toast';
+import http from './services/httpServices';
+import config from './config.json';
+import logService from './services/logService';
+
 
 const Movie = () => {
 
@@ -37,7 +42,12 @@ const Movie = () => {
     }, [search])
 
     const handleDelete = (movie) => {
-        setAllMovies(allMovies.filter(m => m != movie));
+        const deleteMovie = async (id) => {
+            await http.delete(`${config.apiMovieEndPoint}/${id}`)
+            setAllMovies(allMovies.filter(m => m != movie));
+        }
+        deleteMovie(movie._id)
+        toast.success(`${movie.title} is been deleted successfully`);
     }
 
     const handleLike = (movie) => {
@@ -47,6 +57,7 @@ const Movie = () => {
             }
             return m
         }))
+        toast.success(`You ${movie.liked ? 'liked' : 'disliked'} the ${movie.title} movie`);
     }
 
     const handlePageChange = (page) => {
@@ -89,6 +100,12 @@ const Movie = () => {
     return (
         <React.Fragment>
             <div className='row'>
+                <Toaster
+                    position="top-right"
+                    toastOptions={{
+                        duration: 5000,
+                    }}
+                />
                 <div className="col-3">
                     <ListGroup 
                         allData={[{_id:1, name:'All Genre'}, ...allGenre]}

@@ -3,8 +3,10 @@ import React from 'react';
 function Select({name, label, register, required, options, errors, ...rest}) {
 
     return (
-        <div className='form-group'>
-            <label htmlFor={name}>{label}</label>
+        <div className='form-group mt-3'>
+            <label
+                style={{'textTransform':'capitalize'}} 
+                htmlFor={name}>{label}</label>
             <select
                 id={name} 
                 name={name}

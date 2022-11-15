@@ -23,7 +23,7 @@ export default function Demo() {
         try {
             const {data} = await http.post(config.apiEndPoint, obj);
             setAllPosts([data, ...allPosts]);
-            toast.success('Post is been Added successfully');
+            toast.success({message:'Post is been Added successfully'});
         } catch (e) {
             logService.log(e);
             toast.error('Failed to Add post');

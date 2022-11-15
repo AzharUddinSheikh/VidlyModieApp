@@ -7,6 +7,10 @@ import { useEffect, useState } from 'react';
 import Select from './common/Select';
 import { genres } from '../services/genreService';
 import { getMovieById } from '../services/movieService';
+import logService from '../services/logService';
+import toast, { Toaster } from 'react-hot-toast';
+import http from '../services/httpServices';
+import config from '../config.json';
 
 
 const MovieDetail = () => {
@@ -15,17 +19,17 @@ const MovieDetail = () => {
     const [allGenre, setAllGenre] = useState([]);
     
     const schema = yup.object({
-        Title: yup.string().required(),
-        Genre: yup.
+        title: yup.string().required(),
+        genreId: yup.
                 string().
-                required(),
-        NumberInStock: yup.
+                required('Genre is Required'),
+        numberInStock: yup.
                     number().
                     transform((value) => (isNaN(value) ? 0 : value)).
                     integer().
                     positive().
                     required('Please Provide The Stock'),
-        Rate: yup.
+        dailyRentalRate: yup.
                 number().
                 transform((value) => (isNaN(value) ? 0 : value)).
                 positive().
@@ -35,8 +39,20 @@ const MovieDetail = () => {
     const {register, reset, formState : {errors}, handleSubmit } = useForm({resolver: yupResolver(schema)})
 
     const onSubmit = data => {
-        console.log(data);
-        return navigate('/movies', {push:true})
+        if (movieId) {
+            const updateMovie = async () => {
+                await http.put(`${config.apiMovieEndPoint}/${movieId}`, data);
+                toast.success(`Movie Updated Successfully`);
+            };
+            updateMovie();
+        } else {
+            const saveMovie = async () => {
+                await http.post(config.apiMovieEndPoint, data);
+                toast.success(`Movie Added Successfully`)
+            }
+            saveMovie();
+        }
+        return navigate('/movies', {push:true});
     }
 
     useEffect(() => {
@@ -53,10 +69,10 @@ const MovieDetail = () => {
                 try {
                     const {data} = await getMovieById(id);
                     reset({
-                        Title : data.title,
-                        Genre : data.genre._id,
-                        NumberInStock : data.numberInStock,
-                        Rate : data.dailyRentalRate
+                        title : data.title,
+                        genreId : data.genre._id,
+                        numberInStock : data.numberInStock,
+                        dailyRentalRate : data.dailyRentalRate
                     });
                 } catch (err) {
                     return navigate('/not-found', { replace: true });
@@ -68,30 +84,36 @@ const MovieDetail = () => {
 
     return (
        <div className="container">
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    duration: 5000,
+                }}
+            />
             <div className="row">
                 <div className="col">
                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Input
                             id='title'
-                            label='Title'
+                            label='title'
                             errors={errors}
                             register={register}
                             type='text'/>
                         <Select
                             name='genre'
-                            label='Genre'
+                            label='genreId'
                             errors={errors}
                             options={allGenre}
                             register={register}/>
                         <Input
                             id='stock'
-                            label='NumberInStock'
+                            label='numberInStock'
                             errors={errors}
                             register={register}
                             type='number'/>
                         <Input
                             id='rate'
-                            label='Rate'
+                            label='dailyRentalRate'
                             errors={errors}
                             register={register}
                             type='number'/>

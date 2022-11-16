@@ -4,10 +4,13 @@ import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { registerUser } from '../services/userService';
+import { useNavigate } from 'react-router-dom';
 
 
 const RegisterForm = () => {
     
+    const navigate = useNavigate();
+
     const schema = yup.object({
         username: yup.string().email().required(),
         password: yup.string().min(5).required(),
@@ -18,8 +21,9 @@ const RegisterForm = () => {
 
     const onSubmit = async (data) => {
         try {
-            await registerUser(data);
-            console.log('data submittd');
+            const { headers } = await registerUser(data);
+            localStorage.setItem('token', headers['x-auth-token']);
+            navigate('/', {push:true})
         } catch (err) {
             if (err.response && err.response.status == 400) {
                 setError('username', {type:'custom', message:'Username already exists'}, { shouldFocus: true });

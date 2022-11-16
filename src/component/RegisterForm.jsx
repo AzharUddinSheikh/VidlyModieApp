@@ -3,20 +3,28 @@ import Input from './common/Input';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { registerUser } from '../services/userService';
 
 
 const RegisterForm = () => {
     
     const schema = yup.object({
-        Username: yup.string().email().required(),
-        Password: yup.string().min(5).required(),
-        Name: yup.string().required()
+        username: yup.string().email().required(),
+        password: yup.string().min(5).required(),
+        name: yup.string().required()
     }).required();
     
-    const {register, formState: { errors }, handleSubmit} = useForm({resolver: yupResolver(schema)})
+    const {register, setError, formState: { errors }, handleSubmit} = useForm({resolver: yupResolver(schema)})
 
-    const onSubmit = data => {
-        console.log('data submittd register form')
+    const onSubmit = async (data) => {
+        try {
+            await registerUser(data);
+            console.log('data submittd');
+        } catch (err) {
+            if (err.response && err.response.status == 400) {
+                setError('username', {type:'custom', message:'Username already exists'}, { shouldFocus: true });
+            }
+        }
     }
 
     return (
@@ -27,19 +35,19 @@ const RegisterForm = () => {
                         <Input
                             id='username'
                             type='email'
-                            label={'Username'}
+                            label='username'
                             register={register}
                             errors={errors}/>
                         <Input
                             id='password'
                             type='password'
-                            label={'Password'}
+                            label='password'
                             register={register}
                             errors={errors}/>
                         <Input
                             id='name'
                             type='text'
-                            label={'Name'}
+                            label='name'
                             register={register}
                             errors={errors}/>
                         <button className='btn btn-primary mt-3' type='submit'>Register</button>

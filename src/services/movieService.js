@@ -1,22 +1,24 @@
 import http from './httpServices';
 import config from '../config.json';
 
+const apiMovieEndPoint = `${config.apiEndPoint}/movies`;
+
 export function movies () {
-    return http.get(config.apiMovieEndPoint);
+    return http.get(apiMovieEndPoint);
 };
 
 export function addMovie (data) {
-    return http.post(config.apiMovieEndPoint, data);
+    return http.post(apiMovieEndPoint, data);
 };
 
 export function updateMovie (movieId, data) {
-    return http.put(`${config.apiEndPoint}/${movieId}`, data)
+    return http.put(`${apiMovieEndPoint}/${movieId}`, data)
 };
 
 export function getMovieById (movieId) {
-    return http.get(`${config.apiMovieEndPoint}/${movieId}`);
+    return http.get(`${apiMovieEndPoint}/${movieId}`);
 };
 
 export function deleteMovie (movieId) {
-    return http.delete(`${config.apiMovieEndPoint}/${movieId}`)
+    return http.delete(`${apiMovieEndPoint}/${movieId}`)
 };

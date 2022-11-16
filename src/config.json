@@ -1,5 +1,3 @@
 {
-    "apiEndPoint": "https://jsonplaceholder.typicode.com/posts",
-    "apiGenreEndPoint": "http://localhost:3900/api/genres",
-    "apiMovieEndPoint": "http://localhost:3900/api/movies"
+    "apiEndPoint" : "http://localhost:3900/api"
 }

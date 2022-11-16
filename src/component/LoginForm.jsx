@@ -3,34 +3,54 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import Input from './common/Input';
 import { useForm } from "react-hook-form";
+import { login } from '../services/authService';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
 
 const schema = yup.object({
-  Username: yup.string().required(),
-  Password: yup.string().required(),
+  username: yup.string().required(),
+  password: yup.string().required(),
 }).required();
 
 const LoginForm = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(schema)});
+    const navigate = useNavigate();
 
-    const onSubmit = data => {
-        console.log('login data submitted')
+    const onSubmit = async (data) => {
+        try {
+            const {data : jwt} = await login(data);
+            localStorage.setItem('token', jwt);
+            navigate('/', {push:true})
+        } catch (err) {
+            if (err.response && err.response.status == 400) {
+                toast.error(err.response.data);
+            }
+        }
     }
     
     return (
         <div className="container">
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    duration: 5000,
+                }}
+            />
             <div className="row">
                 <div className="col">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Input 
                             id='username'
-                            label='Username'
+                            label='username'
                             register={register}
                             errors={errors}
                             required={false}/>
                         <Input 
                             id='password'
-                            label='Password'
+                            label='password'
+                            type='password'
                             register={register}
                             errors={errors}
                             required/>

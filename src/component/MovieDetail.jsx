@@ -46,10 +46,10 @@ const MovieDetail = () => {
                 await addMovie(data);
                 toast.success(`Movie Added Successfully`);
             }
+            navigate('/movies', {push:true});
         } catch (err) {
             console.log('handle Excepted Error');
         }
-        return navigate('/movies', {push:true});
     }
 
     useEffect(() => {

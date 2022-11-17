@@ -9,6 +9,7 @@ import NotFound from './component/common/NotFound';
 import LoginForm from './component/LoginForm';
 import RegisterForm from './component/RegisterForm';
 import Logout from './component/Logout';
+import ProtectedRoute from './component/common/ProtectedRoute';
 import auth from './services/authService';
 import './App.css';
 
@@ -30,9 +31,11 @@ function App() {
           
         <Route path='/customer' element={<Customer />} />
 
-        <Route path='/movie/:id' element={<MovieDetail />} />
 
-        <Route path='/movies/new' element={ !user ? <Navigate to='/login'/> : <MovieDetail /> } />
+        <Route element={<ProtectedRoute />}>
+            <Route path='/movies/new' element={<MovieDetail />} />
+            <Route path='/movie/:id' element={<MovieDetail />} />
+        </Route>
 
         <Route path='/movies' element={<Movie user={user} />} />
 

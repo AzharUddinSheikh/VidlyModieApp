@@ -32,9 +32,9 @@ function App() {
 
         <Route path='/movie/:id' element={<MovieDetail />} />
 
-        <Route path='/movies/new' element={<MovieDetail />} />
+        <Route path='/movies/new' element={ !user ? <Navigate to='/login'/> : <MovieDetail /> } />
 
-        <Route path='/movies' element={<Movie />} />
+        <Route path='/movies' element={<Movie user={user} />} />
 
         <Route path='/login' element={<LoginForm />} />
 

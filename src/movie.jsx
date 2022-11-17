@@ -10,7 +10,7 @@ import { movies, deleteMovie } from './services/movieService';
 import toast, { Toaster } from 'react-hot-toast';
 
 
-const Movie = () => {
+const Movie = ({user}) => {
 
     const [allMovies, setAllMovies] = useState([]);
     const [itemPerPage] = useState(3);
@@ -126,9 +126,14 @@ const Movie = () => {
                                 value={search}
                                 onChange={e => setSearch(e.currentTarget.value)}/>
                         </div>
-                        <div className="col-3">
-                            <NavLink to='/movies/new' className='btn btn-primary'>Add Movie</NavLink>
-                        </div>
+                        { user && 
+                            <div className="col-3">
+                                <NavLink to='/movies/new' className='btn btn-primary'>Add Movie</NavLink>
+                            </div>
+                        }
+                        {
+                            !user && <div className="col-3"></div>
+                        }
                     </div>
                     
                     <MovieTable

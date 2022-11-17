@@ -1,19 +1,35 @@
-import './App.css';
+import {useEffect, useState} from 'react';
+import {Routes, Route, Navigate} from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 import NavBar from './component/NavBar';
 import Movie from './movie';
+import MovieDetail from './component/MovieDetail';
 import Rental from './component/Rental';
 import Customer from './component/Customer';
-import {Routes, Route, Navigate} from 'react-router-dom';
-import MovieDetail from './component/MovieDetail';
 import NotFound from './component/common/NotFound';
 import LoginForm from './component/LoginForm';
 import RegisterForm from './component/RegisterForm';
+import './App.css';
+import Logout from './component/Logout';
 
 
 function App() {
+
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    try {
+      const jwtToken = localStorage.getItem('token');
+      const userObject = jwt_decode(jwtToken);
+      setUser(userObject)
+    } catch {
+      {};
+    }
+  }, []);
+
   return (
     <>
-      <NavBar />
+      <NavBar user={user}/>
       <Routes>
         <Route path='/rental' element={<Rental />} />
           
@@ -26,6 +42,8 @@ function App() {
         <Route path='/movies' element={<Movie />} />
 
         <Route path='/login' element={<LoginForm />} />
+
+        <Route path='/logout' element={<Logout />} />
 
         <Route path='/register' element={<RegisterForm />} />
 

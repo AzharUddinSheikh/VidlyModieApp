@@ -5,7 +5,6 @@ import Input from './common/Input';
 import { useForm } from "react-hook-form";
 import { login } from '../services/authService';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 
 const schema = yup.object({
@@ -16,13 +15,12 @@ const schema = yup.object({
 const LoginForm = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(schema)});
-    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         try {
             const {data : jwt} = await login(data);
             localStorage.setItem('token', jwt);
-            navigate('/', {push:true})
+            window.location = '/';
         } catch (err) {
             if (err.response && err.response.status == 400) {
                 toast.error(err.response.data);

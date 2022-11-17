@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import Input from './common/Input';
 import { useForm } from "react-hook-form";
-import { login } from '../services/authService';
+import auth from '../services/authService';
 import toast, { Toaster } from 'react-hot-toast';
 
 
@@ -18,8 +18,7 @@ const LoginForm = () => {
 
     const onSubmit = async (data) => {
         try {
-            const {data : jwt} = await login(data);
-            localStorage.setItem('token', jwt);
+            await auth.login(data);
             window.location = '/';
         } catch (err) {
             if (err.response && err.response.status == 400) {

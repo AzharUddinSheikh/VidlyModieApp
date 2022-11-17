@@ -1,5 +1,6 @@
 import React from 'react'
 import Input from './common/Input';
+import auth from '../services/authService';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -19,8 +20,8 @@ const RegisterForm = () => {
     const onSubmit = async (data) => {
         try {
             const { headers } = await registerUser(data);
-            localStorage.setItem('token', headers['x-auth-token']);
-            window.location.reload();
+            auth.loginWithJWT(headers['x-auth-token']);
+            window.location = '/';
         } catch (err) {
             if (err.response && err.response.status == 400) {
                 setError('username', {type:'custom', message:'Username already exists'}, { shouldFocus: true });

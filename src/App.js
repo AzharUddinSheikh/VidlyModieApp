@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
-import jwt_decode from "jwt-decode";
 import NavBar from './component/NavBar';
 import Movie from './movie';
 import MovieDetail from './component/MovieDetail';
@@ -9,8 +8,9 @@ import Customer from './component/Customer';
 import NotFound from './component/common/NotFound';
 import LoginForm from './component/LoginForm';
 import RegisterForm from './component/RegisterForm';
-import './App.css';
 import Logout from './component/Logout';
+import auth from './services/authService';
+import './App.css';
 
 
 function App() {
@@ -18,13 +18,8 @@ function App() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    try {
-      const jwtToken = localStorage.getItem('token');
-      const userObject = jwt_decode(jwtToken);
-      setUser(userObject)
-    } catch {
-      {};
-    }
+    const currentUser = auth.getCurrentUser();
+    setUser(currentUser);
   }, []);
 
   return (

@@ -5,6 +5,7 @@ import Input from './common/Input';
 import { useForm } from "react-hook-form";
 import auth from '../services/authService';
 import toast, { Toaster } from 'react-hot-toast';
+import { useLocation } from 'react-router-dom';
 
 
 const schema = yup.object({
@@ -13,13 +14,13 @@ const schema = yup.object({
 }).required();
 
 const LoginForm = () => {
-
+    const {state} = useLocation();
     const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(schema)});
 
     const onSubmit = async (data) => {
         try {
             await auth.login(data);
-            window.location = '/';
+            window.location = (state?.userRequestedURL) ? state.userRequestedURL : '/';
         } catch (err) {
             if (err.response && err.response.status == 400) {
                 toast.error(err.response.data);

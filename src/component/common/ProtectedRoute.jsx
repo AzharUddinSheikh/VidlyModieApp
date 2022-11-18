@@ -1,10 +1,11 @@
 import React from 'react';
 import auth from '../../services/authService';
-import { Route, Navigate, Outlet} from 'react-router-dom';
+import { Navigate, Outlet, useLocation} from 'react-router-dom';
 
 
 const ProtectedRoute = () => {
-    return !auth.getCurrentUser() ? <Navigate to='/login'/> : <Outlet />
+    const location = useLocation();
+    return !auth.getCurrentUser() ? <Navigate state={{userRequestedURL:location.pathname}} to='/login'/> : <Outlet />
 }
  
 export default ProtectedRoute;

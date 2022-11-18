@@ -31,7 +31,6 @@ function App() {
           
         <Route path='/customer' element={<Customer />} />
 
-
         <Route element={<ProtectedRoute />}>
             <Route path='/movies/new' element={<MovieDetail />} />
             <Route path='/movie/:id' element={<MovieDetail />} />

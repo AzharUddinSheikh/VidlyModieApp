@@ -1,8 +1,7 @@
 import http from './httpServices';
-import config from '../config.json';
 import jwt_decode from "jwt-decode";
 
-const apiAuthEndPoint = `${config.apiEndPoint}/auth`;
+const apiAuthEndPoint = `/auth`;
 const tokenKey = 'token';
 
 http.setJWT(getJWT());

@@ -1,7 +1,6 @@
 import http from './httpServices';
-import config from '../config.json';
 
-const apiGenreEndPoint = `${config.apiEndPoint}/genres`;
+const apiGenreEndPoint = `/genres`;
 
 export function genres () {
     return http.get(apiGenreEndPoint);

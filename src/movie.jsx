@@ -95,10 +95,6 @@ const Movie = ({user}) => {
     
     const {data, length} = getPageData()
 
-    if (length === 0) {
-        return `There is no movies in the database`
-    }
-
     return (
         <React.Fragment>
             <div className='row'>

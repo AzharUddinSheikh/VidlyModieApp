@@ -1,6 +1,6 @@
 import http from './httpServices';
 
-const apiUserEndPoint = `$/users`;
+const apiUserEndPoint = `/users`;
 
 export function registerUser(data) {
     return http.post(apiUserEndPoint, {

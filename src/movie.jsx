@@ -42,10 +42,10 @@ const Movie = ({user}) => {
         const originalMovies = allMovies;
         try {
             await deleteMovie(movie._id)
-            setAllMovies(allMovies.filter(m => m != movie));
+            setAllMovies(allMovies.filter(m => m !== movie));
             toast.success(`${movie.title} is been deleted successfully`);
         } catch (e) {
-            if (e.response && e.response.status == 404) {
+            if (e.response && e.response.status === 404) {
                 toast.error(`This movie already been deleted`)
             }
             setAllMovies(originalMovies);
@@ -54,7 +54,7 @@ const Movie = ({user}) => {
 
     const handleLike = (movie) => {
         setAllMovies(allMovies.map(m => {
-            if (movie == m) {
+            if (movie === m) {
                 m.liked = !(m.liked)
             }
             return m
@@ -79,8 +79,8 @@ const Movie = ({user}) => {
     const getPageData = () => {
         let filteredMovies = allMovies;
 
-        if (selectedGenre.name != 'All Genre') {
-            filteredMovies = filteredMovies.filter(m => m.genre.name == selectedGenre.name);
+        if (selectedGenre.name !== 'All Genre') {
+            filteredMovies = filteredMovies.filter(m => m.genre.name === selectedGenre.name);
         }
         
         if (search) {

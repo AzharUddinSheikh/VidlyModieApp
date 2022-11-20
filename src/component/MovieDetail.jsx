@@ -17,21 +17,21 @@ const MovieDetail = () => {
     
     const schema = yup.object({
         title: yup.string().required(),
-        genreId: yup.
-                string().
-                required('Genre is Required'),
-        numberInStock: yup.
-                    number().
-                    transform((value) => (isNaN(value) ? 0 : value)).
-                    integer().
-                    positive().
-                    required('Please Provide The Stock'),
-        dailyRentalRate: yup.
-                number().
-                transform((value) => (isNaN(value) ? 0 : value)).
-                positive().
-                max(10, 'Should Not be Greater than 10').
-                required('Please Provide The Rate'),
+        genreId: yup
+            .string()
+            .required('Genre is Required'),
+        numberInStock: yup
+                    .number()
+                    .transform((value) => (isNaN(value) ? 0 : value))
+                    .integer()
+                    .positive()
+                    .required('Please Provide The Stock'),
+        dailyRentalRate: yup
+                .number()
+                .transform((value) => (isNaN(value) ? 0 : value))
+                .positive()
+                .max(10, 'Should Not be Greater than 10')
+                .required('Please Provide The Rate'),
     })
     const {register, reset, formState : {errors}, handleSubmit } = useForm({resolver: yupResolver(schema)})
 
@@ -77,7 +77,7 @@ const MovieDetail = () => {
             }
             getMovie(movieId);
         }
-    }, [])
+    })
 
     return (
        <div className="container">

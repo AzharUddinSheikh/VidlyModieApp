@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const ListGroup = ({allData, selectedGenre, onSelectGenre}) => {
     return (
@@ -9,7 +9,7 @@ const ListGroup = ({allData, selectedGenre, onSelectGenre}) => {
                     <li 
                         onClick={() => onSelectGenre(data)}
                         key={data._id} 
-                        className={selectedGenre.name == data.name ? 'list-group-item active' : 'list-group-item'}>
+                        className={selectedGenre.name === data.name ? 'list-group-item active' : 'list-group-item'}>
                             {data.name}
                     </li>)}
         </ul>

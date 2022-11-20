@@ -13,7 +13,8 @@ function log(error) {
     Sentry.captureEvent(error);
 }
 
-export default {
+const logService = {
     init,
     log
-};
+}
+export default logService;

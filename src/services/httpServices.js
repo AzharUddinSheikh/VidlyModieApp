@@ -17,10 +17,12 @@ function setJWT(jwt) {
     axios.defaults.headers.common['x-auth-token'] = jwt;
 };
 
-export default {
+const http = {
     get: axios.get,
     post: axios.post,
     put: axios.put,
     delete: axios.delete,
     setJWT
-}
+};
+
+export default http;

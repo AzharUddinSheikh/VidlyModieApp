@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const TableHeader = ({columns, sortColumn, onSort}) => {
 
     const raiseSort = (path) => {
         let newSort = {...sortColumn};
-        newSort = (newSort.path == path && newSort.order == 'asc') 
+        newSort = (newSort.path === path && newSort.order === 'asc') 
                     ? {path:path, order:'desc'} 
                     : {path:path, order:'asc'}
         onSort(newSort);

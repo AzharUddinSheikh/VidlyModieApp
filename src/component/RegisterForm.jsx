@@ -23,7 +23,7 @@ const RegisterForm = () => {
             auth.loginWithJWT(headers['x-auth-token']);
             window.location = '/';
         } catch (err) {
-            if (err.response && err.response.status == 400) {
+            if (err.response && err.response.status === 400) {
                 setError('username', {type:'custom', message:'Username already exists'}, { shouldFocus: true });
             }
         }

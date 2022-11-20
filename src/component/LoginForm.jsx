@@ -22,7 +22,7 @@ const LoginForm = () => {
             await auth.login(data);
             window.location = (state?.userRequestedURL) ? state.userRequestedURL : '/';
         } catch (err) {
-            if (err.response && err.response.status == 400) {
+            if (err.response && err.response.status === 400) {
                 toast.error(err.response.data);
             }
         }
